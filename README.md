@@ -1,6 +1,6 @@
 # project
 
-This template should help get you started developing with Vue 3 in Vite.
+这是一个用vite+vue3+elementui制作的小游戏，包含各种装备词条，武学，药品，自动战斗等功能，还在持续开发中
 
 ## Recommended IDE Setup
 
