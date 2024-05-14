@@ -83,7 +83,7 @@
 
 <script setup>
 import Item from '../item/Item.vue';
-import { 穿戴中的武器, 穿戴中的手套, 穿戴中的帽子, 穿戴中的衣服, 穿戴中的腰带, 穿戴中的鞋子, 穿戴中的披风,穿戴中的项链,穿戴中的戒指,穿戴中的耳环,穿戴中的符石,equipmentDataComputed} from '../../gameData/equipmentConfig';
+import { 装备宝石属性,穿戴中的武器, 穿戴中的手套, 穿戴中的帽子, 穿戴中的衣服, 穿戴中的腰带, 穿戴中的鞋子, 穿戴中的披风,穿戴中的项链,穿戴中的戒指,穿戴中的耳环,穿戴中的符石,equipmentDataComputed} from '../../gameData/equipmentConfig';
 import { 装备中的气血药, 装备中的内力药, 服用 } from '../../gameData/drugConfig';
 
 </script>

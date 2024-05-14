@@ -1,6 +1,6 @@
 import { computed } from "vue";
 import { workData } from "./workData";
-import { itemList } from "./itemConfig";
+import { itemList,findItem } from "./itemConfig";
 import { ElMessage, ElMessageBox, ElNotification } from 'element-plus'
 
 export const 鉴定装备品质 = () => {
@@ -328,22 +328,49 @@ export const 评分参照表 = {
   内力吸取: 10,
 }
 
+export const 装备宝石属性 = computed(() => {
+  let 属性 = {
+    气血: 0,
+    内力: 0,
+    外攻: 0,
+    内攻: 0,
+    防御: 0,
+    身法: 0,
+    冰攻击: 0,
+    火攻击: 0,
+    玄攻击: 0,
+    毒攻击: 0,
+    冰穿透: 0,
+    火穿透: 0,
+    玄穿透: 0,
+    毒穿透: 0,
+  }
+  穿戴中的装备列表.value.forEach(item => {
+    if (item.extra?.宝石) {
+      item.extra?.宝石.forEach(宝石 => {
+        let 宝石详情 = findItem(宝石)
+        属性[宝石详情.type2] += 宝石详情.effect
+      })
+    }
+  })
+  return 属性
+})
 // 装备数据汇总
 export const equipmentDataComputed = computed(() => {
-  let 气血 = (穿戴中的装备列表.value.reduce((total, item) => total + (item.extra.装备基础属性?.气血 || 0), 0)) + (穿戴中的装备列表.value.reduce((total, item) => total + (item.extra.装备附加属性?.气血 || 0), 0));
-  let 内力 = (穿戴中的装备列表.value.reduce((total, item) => total + (item.extra.装备基础属性?.内力 || 0), 0)) + (穿戴中的装备列表.value.reduce((total, item) => total + (item.extra.装备附加属性?.内力 || 0), 0));
-  let 外攻 = (穿戴中的装备列表.value.reduce((total, item) => total + (item.extra.装备基础属性?.外攻 || 0), 0)) + (穿戴中的装备列表.value.reduce((total, item) => total + (item.extra.装备附加属性?.外攻 || 0), 0));
-  let 内攻 = (穿戴中的装备列表.value.reduce((total, item) => total + (item.extra.装备基础属性?.内攻 || 0), 0)) + (穿戴中的装备列表.value.reduce((total, item) => total + (item.extra.装备附加属性?.内攻 || 0), 0));
-  let 防御 = (穿戴中的装备列表.value.reduce((total, item) => total + (item.extra.装备基础属性?.防御 || 0), 0)) + (穿戴中的装备列表.value.reduce((total, item) => total + (item.extra.装备附加属性?.防御 || 0), 0));
-  let 身法 = (穿戴中的装备列表.value.reduce((total, item) => total + (item.extra.装备基础属性?.身法 || 0), 0)) + (穿戴中的装备列表.value.reduce((total, item) => total + (item.extra.装备附加属性?.身法 || 0), 0));
-  let 冰攻击 = (穿戴中的装备列表.value.reduce((total, item) => total + (item.extra.装备基础属性?.冰攻击 || 0), 0)) + (穿戴中的装备列表.value.reduce((total, item) => total + (item.extra.装备附加属性?.冰攻击 || 0), 0));
-  let 火攻击 = (穿戴中的装备列表.value.reduce((total, item) => total + (item.extra.装备基础属性?.火攻击 || 0), 0)) + (穿戴中的装备列表.value.reduce((total, item) => total + (item.extra.装备附加属性?.火攻击 || 0), 0));
-  let 玄攻击 = (穿戴中的装备列表.value.reduce((total, item) => total + (item.extra.装备基础属性?.玄攻击 || 0), 0)) + (穿戴中的装备列表.value.reduce((total, item) => total + (item.extra.装备附加属性?.玄攻击 || 0), 0));
-  let 毒攻击 = (穿戴中的装备列表.value.reduce((total, item) => total + (item.extra.装备基础属性?.毒攻击 || 0), 0)) + (穿戴中的装备列表.value.reduce((total, item) => total + (item.extra.装备附加属性?.毒攻击 || 0), 0));
-  let 冰穿透 = (穿戴中的装备列表.value.reduce((total, item) => total + (item.extra.装备基础属性?.冰穿透 || 0), 0)) + (穿戴中的装备列表.value.reduce((total, item) => total + (item.extra.装备附加属性?.冰穿透 || 0), 0));
-  let 火穿透 = (穿戴中的装备列表.value.reduce((total, item) => total + (item.extra.装备基础属性?.火穿透 || 0), 0)) + (穿戴中的装备列表.value.reduce((total, item) => total + (item.extra.装备附加属性?.火穿透 || 0), 0));
-  let 玄穿透 = (穿戴中的装备列表.value.reduce((total, item) => total + (item.extra.装备基础属性?.玄穿透 || 0), 0)) + (穿戴中的装备列表.value.reduce((total, item) => total + (item.extra.装备附加属性?.玄穿透 || 0), 0));
-  let 毒穿透 = (穿戴中的装备列表.value.reduce((total, item) => total + (item.extra.装备基础属性?.毒穿透 || 0), 0)) + (穿戴中的装备列表.value.reduce((total, item) => total + (item.extra.装备附加属性?.毒穿透 || 0), 0));
+  let 气血 = (穿戴中的装备列表.value.reduce((total, item) => total + (item.extra.装备基础属性?.气血 || 0), 0)) + (穿戴中的装备列表.value.reduce((total, item) => total + (item.extra.装备附加属性?.气血 || 0), 0)) + 装备宝石属性.value.气血
+  let 内力 = (穿戴中的装备列表.value.reduce((total, item) => total + (item.extra.装备基础属性?.内力 || 0), 0)) + (穿戴中的装备列表.value.reduce((total, item) => total + (item.extra.装备附加属性?.内力 || 0), 0)) + 装备宝石属性.value.内力
+  let 外攻 = (穿戴中的装备列表.value.reduce((total, item) => total + (item.extra.装备基础属性?.外攻 || 0), 0)) + (穿戴中的装备列表.value.reduce((total, item) => total + (item.extra.装备附加属性?.外攻 || 0), 0)) + 装备宝石属性.value.外攻
+  let 内攻 = (穿戴中的装备列表.value.reduce((total, item) => total + (item.extra.装备基础属性?.内攻 || 0), 0)) + (穿戴中的装备列表.value.reduce((total, item) => total + (item.extra.装备附加属性?.内攻 || 0), 0)) + 装备宝石属性.value.内攻
+  let 防御 = (穿戴中的装备列表.value.reduce((total, item) => total + (item.extra.装备基础属性?.防御 || 0), 0)) + (穿戴中的装备列表.value.reduce((total, item) => total + (item.extra.装备附加属性?.防御 || 0), 0)) + 装备宝石属性.value.防御
+  let 身法 = (穿戴中的装备列表.value.reduce((total, item) => total + (item.extra.装备基础属性?.身法 || 0), 0)) + (穿戴中的装备列表.value.reduce((total, item) => total + (item.extra.装备附加属性?.身法 || 0), 0))  + 装备宝石属性.value.身法
+  let 冰攻击 = (穿戴中的装备列表.value.reduce((total, item) => total + (item.extra.装备基础属性?.冰攻击 || 0), 0)) + (穿戴中的装备列表.value.reduce((total, item) => total + (item.extra.装备附加属性?.冰攻击 || 0), 0)) + 装备宝石属性.value.冰攻击
+  let 火攻击 = (穿戴中的装备列表.value.reduce((total, item) => total + (item.extra.装备基础属性?.火攻击 || 0), 0)) + (穿戴中的装备列表.value.reduce((total, item) => total + (item.extra.装备附加属性?.火攻击 || 0), 0)) + 装备宝石属性.value.火攻击
+  let 玄攻击 = (穿戴中的装备列表.value.reduce((total, item) => total + (item.extra.装备基础属性?.玄攻击 || 0), 0)) + (穿戴中的装备列表.value.reduce((total, item) => total + (item.extra.装备附加属性?.玄攻击 || 0), 0)) + 装备宝石属性.value.玄攻击
+  let 毒攻击 = (穿戴中的装备列表.value.reduce((total, item) => total + (item.extra.装备基础属性?.毒攻击 || 0), 0)) + (穿戴中的装备列表.value.reduce((total, item) => total + (item.extra.装备附加属性?.毒攻击 || 0), 0)) + 装备宝石属性.value.毒攻击
+  let 冰穿透 = (穿戴中的装备列表.value.reduce((total, item) => total + (item.extra.装备基础属性?.冰穿透 || 0), 0)) + (穿戴中的装备列表.value.reduce((total, item) => total + (item.extra.装备附加属性?.冰穿透 || 0), 0)) + 装备宝石属性.value.冰穿透
+  let 火穿透 = (穿戴中的装备列表.value.reduce((total, item) => total + (item.extra.装备基础属性?.火穿透 || 0), 0)) + (穿戴中的装备列表.value.reduce((total, item) => total + (item.extra.装备附加属性?.火穿透 || 0), 0)) + 装备宝石属性.value.火穿透
+  let 玄穿透 = (穿戴中的装备列表.value.reduce((total, item) => total + (item.extra.装备基础属性?.玄穿透 || 0), 0)) + (穿戴中的装备列表.value.reduce((total, item) => total + (item.extra.装备附加属性?.玄穿透 || 0), 0)) + 装备宝石属性.value.玄穿透
+  let 毒穿透 = (穿戴中的装备列表.value.reduce((total, item) => total + (item.extra.装备基础属性?.毒穿透 || 0), 0)) + (穿戴中的装备列表.value.reduce((total, item) => total + (item.extra.装备附加属性?.毒穿透 || 0), 0)) + 装备宝石属性.value.毒穿透
   let 外功伤害 = toFixed(穿戴中的装备列表.value.reduce((total, item) => total + item.extra.装备附加属性?.外功伤害 || 0, 0) / 10, 1)
   let 内功伤害 = toFixed(穿戴中的装备列表.value.reduce((total, item) => total + item.extra.装备附加属性?.内功伤害 || 0, 0) / 10, 1)
   let 冰元素伤害 = toFixed(穿戴中的装备列表.value.reduce((total, item) => total + item.extra.装备附加属性?.冰元素伤害 || 0, 0) / 10, 1)
